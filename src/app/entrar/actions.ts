@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -21,8 +22,13 @@ export async function cadastrar(formData: FormData) {
   const { email, password } = campos(formData);
   if (password.length < 8) redirect("/entrar?modo=cadastro&erro=senha");
 
+  const origin = (await headers()).get("origin") ?? "";
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { emailRedirectTo: `${origin}/auth/callback` },
+  });
   if (error) redirect("/entrar?modo=cadastro&erro=cadastro");
 
   // Com confirmação de e-mail ligada, o Supabase não devolve sessão ainda.

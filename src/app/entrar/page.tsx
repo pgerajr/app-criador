@@ -9,6 +9,7 @@ const erros: Record<string, string> = {
   login: "E-mail ou senha incorretos.",
   senha: "A senha precisa ter pelo menos 8 caracteres.",
   cadastro: "Não foi possível criar a conta. Confira o e-mail e tente de novo.",
+  link: "O link de confirmação expirou ou já foi usado. Entre com seu e-mail e senha.",
 };
 
 export default async function EntrarPage({ searchParams }: PageProps<"/entrar">) {
